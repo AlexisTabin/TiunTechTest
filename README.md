@@ -21,3 +21,13 @@ In a second terminal,
 ```shell
 $ npm run android
 ```
+
+## Result
+
+Select France            |  Show France Details
+:-------------------------:|:-------------------------:
+![conversation 1](pictures/France_1.png) |  ![conversation 2](pictures/France_2.png)
+
+Select Belgium           |  Show Belgium Details
+:-------------------------:|:-------------------------:
+![conversation 3](pictures/Belgium_1.png) | ![conversation 4](pictures/Belgium_2.png)
