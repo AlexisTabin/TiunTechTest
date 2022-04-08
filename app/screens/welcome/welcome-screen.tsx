@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { View, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
@@ -12,8 +12,8 @@ import {
 } from "../../components"
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
+import { CountrySelect } from "../countries/country-select"
 
-const bowserLogo = require("./bowser.png")
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -93,24 +93,18 @@ export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> 
     return (
       <View testID="WelcomeScreen" style={FULL}>
         <GradientBackground colors={["#422443", "#281b34"]} />
-        <Screen style={CONTAINER} preset="scroll" backgroundColor={color.transparent}>
-          <Header headerTx="welcomeScreen.poweredBy" style={HEADER} titleStyle={HEADER_TITLE} />
+        <Screen style={CONTAINER} preset="fixed" backgroundColor={color.transparent}>
+          <Header headerTx="welcomeScreen.tiunTechnicalTest" style={HEADER} titleStyle={HEADER_TITLE} />
           <Text style={TITLE_WRAPPER}>
-            <Text style={TITLE} text="Your new app, " />
-            <Text style={ALMOST} text="almost" />
-            <Text style={TITLE} text="!" />
+            <Text style={TITLE} text="Select one country in the list below." />
           </Text>
-          <Text style={TITLE} preset="header" tx="welcomeScreen.readyForLaunch" />
-          <Image source={bowserLogo} style={BOWSER} />
-          <Text style={CONTENT}>
+          {/* <Text style={CONTENT}>
             COUCOU Voici l'écran d'accueil
-          </Text>
-          <Text style={CONTENT}>
-            For everyone else, this is where you'll see a live preview of your fully functioning app
-            using Ignite.
-          </Text>
+          </Text>  */}
+          <CountrySelect/>
         </Screen>
-        <SafeAreaView style={FOOTER}>
+        
+        {/* <SafeAreaView style={FOOTER}>
           <View style={FOOTER_CONTENT}>
             <Button
               testID="next-screen-button"
@@ -120,7 +114,8 @@ export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> 
               onPress={nextScreen}
             />
           </View>
-        </SafeAreaView>
+        </SafeAreaView> */}
+
       </View>
     )
   },

@@ -12,12 +12,15 @@
 
 Make sure you have Android development environment installed. [This link](https://reactnative.dev/docs/environment-setup) will help you setting up your environment otherwise.
 
-In a terminal, run `npx react-native start`
+In a terminal, run 
+```shell
+$ npx react-native start
+```
 
-In a second terminal, `npm run android`
-
-
-
+In a second terminal,
+```shell
+$ npm run android
+```
 
 ## The latest and greatest boilerplate for Infinite Red opinions
 
