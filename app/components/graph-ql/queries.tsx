@@ -9,3 +9,19 @@ export const LIST_COUNTRIES = gql`
         }
     }
 `;
+
+export const COUNTRY = gql`
+    query($countryCode: ID!) {
+        country(code: $countryCode) {
+          code
+          capital
+          currency
+          name
+          languages {
+            code
+            name
+            native
+          }
+        }
+    }
+`

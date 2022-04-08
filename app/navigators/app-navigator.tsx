@@ -25,7 +25,7 @@ import { navigationRef, useBackButtonHandler } from "./navigation-utilities"
  */
 export type NavigatorParamList = {
   welcome: undefined
-  demo: undefined
+  demo: {countryId : String}
   demoList: undefined
   // 🔥 Your screens go here
 }

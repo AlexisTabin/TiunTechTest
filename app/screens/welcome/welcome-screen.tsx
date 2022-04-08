@@ -1,19 +1,40 @@
-import React, { FC, useState } from "react"
-import { View, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
+import React, { FC, useState, useEffect  } from "react"
+import { View, ViewStyle, TextStyle, FlatList, StyleSheet, TouchableOpacity } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
-  Button,
   Header,
   Screen,
-  Text,
   GradientBackground,
-  AutoImage as Image,
 } from "../../components"
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
-import { CountrySelect } from "../countries/country-select"
+import { useQuery } from '@apollo/client';
+import { Text } from "../../components"
+import{ LIST_COUNTRIES } from '../../components/graph-ql/queries'
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: 22
+    },
+    item: {
+        backgroundColor: '#f9c2ff',
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+        marginVertical: 8,
+    },
+    title: {
+        fontSize: 16,
+      },
+});
+
+const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+    <Text style={[styles.title, textColor]}>{item.name}</Text>
+  </TouchableOpacity>
+);
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
@@ -38,57 +59,68 @@ const HEADER_TITLE: TextStyle = {
   textAlign: "center",
   letterSpacing: 1.5,
 }
-const TITLE_WRAPPER: TextStyle = {
+export const TITLE_WRAPPER: TextStyle = {
   ...TEXT,
   textAlign: "center",
 }
-const TITLE: TextStyle = {
+export const TITLE: TextStyle = {
   ...TEXT,
   ...BOLD,
   fontSize: 28,
   lineHeight: 38,
   textAlign: "center",
 }
-const ALMOST: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 26,
-  fontStyle: "italic",
-}
-const BOWSER: ImageStyle = {
-  alignSelf: "center",
-  marginVertical: spacing[5],
-  maxWidth: "100%",
-  width: 343,
-  height: 230,
-}
-const CONTENT: TextStyle = {
-  ...TEXT,
-  color: "#BAB6C8",
-  fontSize: 15,
-  lineHeight: 22,
-  marginBottom: spacing[5],
-}
-const CONTINUE: ViewStyle = {
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-  backgroundColor: color.palette.deepPurple,
-}
-const CONTINUE_TEXT: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 13,
-  letterSpacing: 2,
-}
-const FOOTER: ViewStyle = { backgroundColor: "#20162D" }
-const FOOTER_CONTENT: ViewStyle = {
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-}
 
 export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = observer(
   ({ navigation }) => {
-    const nextScreen = () => navigation.navigate("demo")
+    const nextScreen = (countryId) => {
+      navigation.navigate("demo", {countryId})
+    }
+
+    // create a component that renders a select input for countries
+    // I wanted to put this function in its own component, but I couldn't figure out 
+    // how to make the callback to nextscreen
+    function CountrySelect() {
+      const [countries, setCountries] = useState([])
+      const [selectedId, setSelectedId] = useState(null);
+      const {data, loading, error} = useQuery(LIST_COUNTRIES);
+
+      useEffect(() => {
+          if (typeof(data) == "object") {
+              setCountries(data.countries)
+          }
+      }, [data])
+
+      if (loading || error) {
+          return <Text>{error ? error.message : 'Loading...'}</Text>
+      }
+
+      const renderItem = ({ item }) => {
+          const backgroundColor = item.code === selectedId ? "#6e3b6e" : "#f9c2ff";
+          const color = item.cdode === selectedId ? 'white' : 'black';
+      
+          return (
+            <Item
+              item={item}
+              onPress={() => {
+                      setSelectedId(item.code);
+                      nextScreen(item.code);
+                  }}
+              backgroundColor={{ backgroundColor }}
+              textColor={{ color }}
+            />
+          );
+      }
+
+      return (
+          <FlatList
+          data={countries}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.code}
+          extraData={selectedId}
+          />
+      );
+    }
 
     return (
       <View testID="WelcomeScreen" style={FULL}>
@@ -98,24 +130,8 @@ export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> 
           <Text style={TITLE_WRAPPER}>
             <Text style={TITLE} text="Select one country in the list below." />
           </Text>
-          {/* <Text style={CONTENT}>
-            COUCOU Voici l'écran d'accueil
-          </Text>  */}
           <CountrySelect/>
         </Screen>
-        
-        {/* <SafeAreaView style={FOOTER}>
-          <View style={FOOTER_CONTENT}>
-            <Button
-              testID="next-screen-button"
-              style={CONTINUE}
-              textStyle={CONTINUE_TEXT}
-              tx="welcomeScreen.continue"
-              onPress={nextScreen}
-            />
-          </View>
-        </SafeAreaView> */}
-
       </View>
     )
   },

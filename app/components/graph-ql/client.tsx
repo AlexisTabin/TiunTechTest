@@ -1,4 +1,4 @@
-import {ApolloClient, InMemoryCache, gql, useQuery} from '@apollo/client';
+import {ApolloClient, InMemoryCache} from '@apollo/client';
 
 
 
