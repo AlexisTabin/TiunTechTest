@@ -12,7 +12,7 @@ import { NavigatorParamList } from "../../navigators"
 import { color, spacing } from "../../theme"
 import{ COUNTRY } from '../../components/graph-ql/queries'
 import { useQuery } from '@apollo/client';
-import { TITLE, TITLE_WRAPPER } from "../welcome/welcome-screen"
+import { TITLE, TITLE_WRAPPER } from "../countries/select-countries-screen"
 
 const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
