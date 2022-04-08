@@ -10,7 +10,7 @@
 
 ## Get Started
 
-Make sure you have Android development environment installed. [This link](https://reactnative.dev/docs/environment-setup) will help you setting up your environment otherwise.
+Make sure you have Android development environment installed. [This link](https://reactnative.dev/docs/environment-setup) will help you setting up your environment.
 
 In a terminal, run 
 ```shell
